@@ -51,5 +51,5 @@ class HandKeypointI(HandKeypoint):
         self.worker = worker
 
 
-    def getKeypoints(self, handImg, c):
-        return self.worker.HandKeypoint_getKeypoints(handImg)
+    def getKeypoints(self, handImg, bbox, c):
+        return self.worker.HandKeypoint_getKeypoints(handImg, bbox)

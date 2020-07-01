@@ -1,5 +1,5 @@
 # Endpoints for implements interfaces
-HandKeypoint.Endpoints=tcp -p 0
+HandKeypoint.Endpoints=tcp -p 10007
 
 
 

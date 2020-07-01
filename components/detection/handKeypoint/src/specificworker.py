@@ -74,14 +74,13 @@ class SpecificWorker(GenericWorker):
     #
     # getKeypoints
     #
-    def HandKeypoint_getKeypoints(self, handImg):
+    def HandKeypoint_getKeypoints(self, handImg, bbox):
         #
         # implementCODE
         #
+        print("Called")
         keypoints = KeypointType()
         return keypoints
 
     # ===================================================================
     # ===================================================================
-
-

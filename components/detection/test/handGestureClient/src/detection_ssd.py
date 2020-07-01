@@ -33,7 +33,10 @@ category_index = label_map_util.create_category_index(categories)
 def load_inference_graph():
     # load frozen tensorflow model into memory
     print("> ====== loading HAND frozen graph into memory")
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.33)
+    gpus = tf.config.experimental.list_physical_devices('GPU')
+    print("GPUS Detected")
+    print(gpus)
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.2)
     detection_graph = tf.Graph()
     with detection_graph.as_default():
         od_graph_def = tf.GraphDef()
@@ -41,7 +44,9 @@ def load_inference_graph():
             serialized_graph = fid.read()
             od_graph_def.ParseFromString(serialized_graph)
             tf.import_graph_def(od_graph_def, name='')
-        sess = tf.Session(graph=detection_graph, config=tf.ConfigProto(gpu_options=gpu_options))
+        config = tf.ConfigProto(gpu_options=gpu_options)
+        config.gpu_options.allow_growth = True
+        sess = tf.Session(graph=detection_graph, config=config)
     print(">  ====== Hand Inference graph loaded.")
     return detection_graph, sess
 
@@ -63,5 +68,4 @@ def detect_objects(image_np, detection_graph, sess):
         [detection_boxes, detection_scores,
             detection_classes, num_detections],
         feed_dict={image_tensor: image_np_expanded})
-
     return np.squeeze(boxes), np.squeeze(scores), np.squeeze(classes)

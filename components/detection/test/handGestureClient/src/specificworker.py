@@ -50,16 +50,13 @@ class SpecificWorker(GenericWorker):
                 import detection_ssd
                 self.detection_graph, self.sess = detection_ssd.load_inference_graph()
             except:
-                print("Error Loading Model. Ensure that models are downloaded \
-                                            and placed in correct directory")
+                print("Error Loading Model. Ensure that models are downloaded and placed in correct directory")
         elif(self.method==2):
             try:
                 global detection_mediapipe
                 import detection_mediapipe
             except:
-                print("Error Loading Model. Ensure that models are downloaded \
-                            and placed in correct directory")
-
+                print("Error Loading Model. Ensure that models are downloaded and placed in correct directory")
 
         # Bounding Box display configurations
         self.bbox_color = (204, 41, 0)
@@ -175,6 +172,15 @@ class SpecificWorker(GenericWorker):
             bbox = None
             print(e)
             print("Error processing input image")
+
+        if bbox is not None:
+            sendHandImage = TImage()
+            sendHandImage.width = handImg.width
+            sendHandImage.height = handImg.height
+            sendHandImage.depth = handImg.depth
+            sendHandImage.image = handImg.image
+            detected_keypoints = self.handkeypoint_proxy.getKeypoints(sendHandImage, bbox)
+
         hand = HandType()
         hand.boundingbox = bbox
         return hand
